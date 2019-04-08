@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Vue Course - Home Work #1</title>
+	<meta charset="utf-8">
 	<style type="text/css">
 		[v-cloak] {
 			display: none;
@@ -13,10 +14,14 @@
 	<div id="app" v-cloak>
 		<h1>Домашнее задание №1. Список пользователей.</h1>
 		
-		<button v-on:click='toggleUsersList' v-tooltip>{{ condition ? 'Hide table' : 'Show table'}}</button>
+		<button v-on:click='toggleUsersList' v-tooltip>
+			{{ condition
+			? 'Hide table'
+			: 'Show table'}}
+		</button>
 
 		<div v-show='condition'>
-			<h2>Всего пользователей: <span v-text='getUsersCount()'></span></h2>
+			<h2>Всего пользователей: <span>{{ getUsersCount() }}</span></h2>
 			<!-- <h2>Всего пользователей: <span>{{ users.length }}</span></h2> -->
 			<table>
 				<tr>
@@ -31,7 +36,7 @@
 					<td>{{ user.firstname | capitalize }}</td>
 					<td>{{ user.lastname }}</td>
 					<td>{{ user.fathername }}</td>
-					<td><button v-on:click='copyToBuffer' v-bind:data-id='index'>copy</button></td>
+					<td><button v-on:click='copyToBuffer(index)'>copy</button></td>
 				</tr>
 			</table>
 		</div>
@@ -58,56 +63,58 @@
 		// экземпляр нанего приложения
 		const app = new Vue({
 			el: '#app',
+            data: function() {
+                return {
+                    condition: false,
+                    users: []
+                }
+            },
 			methods: {
 				getUsersCount: function () {
 					return this.users.length;
 				},
 				toggleUsersList: function () {
-					this.condition = !(this.condition); 
+					this.condition = !this.condition;
 				},
-				copyToBuffer: function (event) {
-					let user = this.users[event.target.getAttribute('data-id')];
-					//просто вывожу ФИО в консоль
-					console.log( [user.firstname, user.lastname, user.fathername].join(' ') );
+				copyToBuffer: function (index) {
+                    let user = this.users[index];
+					// просто вывожу ФИО в консоль
+					//console.log( [user.lastname, user.firstname, user.fathername].join(' ') );
+					alert( [user.lastname, user.firstname, user.fathername].join(' ') );
 				}
 			},
-			data: function() {
-				return {
-					condition: false,
-					users: [
-						{
-							firstname: 'Василий',
-							lastname: 'Наумкин',
-							fathername: 'Викторович',
-							avatar: 'https://gravatar.com/avatar/3a1f53ab0678a39c3aad9f8669ad9f3a?s=200&d=mm'
-						},
-						{
-							firstname: 'Владимир',
-							lastname: 'Володин',
-							fathername: 'Олегович',
-							avatar: 'https://gravatar.com/avatar/546201f9fb47870f661eeb1db4727679?s=200&d=mm'
-						},
-						{
-							firstname: 'Сергей',
-							lastname: 'Шлоков',
-							fathername: 'Геннадьевич',
-							avatar: 'https://gravatar.com/avatar/70c08253158b8517d262ca672b66e4af?s=200&d=mm'
-						},
-						{
-							firstname: 'Павел',
-							lastname: 'Высоцкий',
-							fathername: 'Степанович',
-							avatar: 'https://gravatar.com/avatar/0c729e7f11c2d4ec9e8b15c8e93ed9dc?s=200&d=mm'
-						},
-						{
-							firstname: 'Андрей',
-							lastname: 'Степаненко',
-							fathername: 'Александрович',
-							avatar: 'https://gravatar.com/avatar/bfe7111f407519831a92b9378d89e68b?s=200&d=mm'
-						}
-					]
-				}
-			}
+			created: function () {
+				this.users = [{
+                    firstname: 'Василий',
+                    lastname: 'Наумкин',
+                    fathername: 'Викторович',
+                    avatar: 'https://gravatar.com/avatar/3a1f53ab0678a39c3aad9f8669ad9f3a?s=200&d=mm'
+                },
+				{
+					firstname: 'Владимир',
+					lastname: 'Володин',
+					fathername: 'Олегович',
+					avatar: 'https://gravatar.com/avatar/546201f9fb47870f661eeb1db4727679?s=200&d=mm'
+				},
+				{
+					firstname: 'Сергей',
+					lastname: 'Шлоков',
+					fathername: 'Геннадьевич',
+					avatar: 'https://gravatar.com/avatar/70c08253158b8517d262ca672b66e4af?s=200&d=mm'
+				},
+				{
+					firstname: 'Павел',
+					lastname: 'Высоцкий',
+					fathername: 'Степанович',
+					avatar: 'https://gravatar.com/avatar/0c729e7f11c2d4ec9e8b15c8e93ed9dc?s=200&d=mm'
+				},
+				{
+					firstname: 'Андрей',
+					lastname: 'Степаненко',
+					fathername: 'Александрович',
+					avatar: 'https://gravatar.com/avatar/bfe7111f407519831a92b9378d89e68b?s=200&d=mm'
+				}]
+            }
 		});
 	</script>
 </body>
