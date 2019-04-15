@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue Course - Home Work #1</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style type="text/css">
+        [v-cloak] {display: none;}
+        .application {margin-top: 60px;}
+    </style>
+</head>
+<body>
+	<div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div id="app" class="application" v-cloak>
+                    <!--<input type="number" v-model.number="counter">-->
+                    <div v-if="loading">List loading...</div>
+                    <div v-show='condition'>
+                        <user-list v-bind:list="users" v-on:remove="removeFromUsers"></user-list>
+                    </div>
+                    <button v-on:click='toggleUsersList' v-tooltip class="btn btn-primary">
+                        {{ buttonText }}
+                    </button>
+                </div>
+            </div>
+        </div>
+	</div>
+
+
+	<!---->
+	<!--VUE TEMPLATES-->
+	<!---->
+
+	<template id="table">
+		<table class="table">
+			<tbody>
+				<tr v-for='(item, index) in list' v-bind:key='item.id'>
+					<td>{{item.id}}</td>
+					<td>{{ item.name | capitalize }}</td>
+					<td>{{ item.username }}</td>
+					<td>{{ item.phone }}</td>
+					<!--<td><button v-on:click='copyToBuffer(index)'>copy</button></td>-->
+					<td>
+						<button
+							type="button"
+							v-on:click="removeFromList(item.id)"
+							class="btn btn-sm btn-warning">Del</button>
+                        <button
+                                type="button"
+                                v-on:click="editUser(item.id)"
+                                class="btn btn-sm btn-success"
+                        >Edit</button>
+					</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr><td colspan="5"><h4>Всего пользователей: <span>{{ list.length }}</span></h4></td></tr>
+			</tfoot>
+		</table>
+	</template>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript" src="user_list.js"></script>
+</body>
+</html>

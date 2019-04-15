@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User edit page</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<style type="text/css">
+		[v-cloak] {display: none;}
+		.application {margin-top: 60px;}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 offset-lg-3">
+				<div id="app" class="application" v-cloak>
+					<p class="lead text-center">Значение user_id по умолчанию равен "1". Первого в списке пользователя будем редактировать.</p>
+					<user-form v-bind:user_id="user_id" v-on:save="saveUser"></user-form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!---->
+	<!--VUE TEMPLATES-->
+	<!---->
+
+	<template id="userform">
+		<form action="">
+			<div class="form-group">
+				<label for="name">Full name of user</label>
+				<input type="text"
+					   class="form-control"
+					   id="name"
+					   placeholder="Enter full name"
+					   v-model="user_data.name">
+			</div>
+			<div class="form-group">
+				<label for="username">Username</label>
+				<input
+						type="text"
+						class="form-control"
+						id="username"
+						placeholder="Enter username"
+						v-model="user_data.username">
+			</div>
+			<div class="form-group">
+				<label for="phone">Phone</label>
+				<input
+						type="text"
+						class="form-control"
+						id="phone"
+						placeholder="Enter phone"
+						v-model="user_data.phone"
+				>
+			</div>
+			<button type="button" class="btn btn-primary" v-on:click="saveChanges(user_id, user_data)">Send changes</button>
+		</form>
+	</template>
+
+	<!-- <input type="text" name="" v-bind:value="title" v-on:input="title = $event.target.value"> -->
+	<!-- <input type="text" name="" v-model="title"> <!-- синтаксич сокращение-->
+
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript" src="user_edit.js"></script>
+
+</body>
+</html>

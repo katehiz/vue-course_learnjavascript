@@ -12,7 +12,8 @@ Vue.filter('capitalize', function (value) {
     return value.toUpperCase();
 });
 
-const usersList = {
+
+const userList = {
     template: '#table',
     props: {
         list: {
@@ -20,9 +21,11 @@ const usersList = {
             required: true
         }
     },
-    data: function () {
-        return {}
-    },
+    /*data: function () {
+        return {
+            list: []
+        }
+    },*/
     methods: {
         removeFromList: function (id) {
             this.$emit('remove', id)
@@ -30,17 +33,17 @@ const usersList = {
     }
 };
 
-// экземпляр нанего приложения
 const app = new Vue({
     el: '#app',
     components: {
-        'userslist': usersList
+        'user-list': userList
     },
     data: function() {
         return {
             condition: true,
             users: [],
-            counter: 5
+            loading: true
+
         }
     },
     // вычисляемые значения. Переменные которые зависят от значения других локальных параметров
@@ -78,15 +81,18 @@ const app = new Vue({
         toggleUsersList: function () {
             this.condition = !this.condition;
         },
-        copyToBuffer: function (index) {
+        /*copyToBuffer: function (index) {
             let user = this.users[index];
             alert( [user.lastname, user.firstname, user.fathername].join(' ') );
-        },
+        },*/
         loadUsers: function () {
             axios.get('http://jsonplaceholder.typicode.com/users')
-                .then( (response) => this.users = response.data
-                .then(console.log('список пользователей загружен'))
-                .catch(console.error('не удалось загрузить список'))
+                .then( (response) => {
+                    this.users = response.data;
+                    console.log('список пользователей загружен');
+                })
+                .catch( error => console.error(error) )
+                .finally( () => this.loading = false )
         }
     }
 
