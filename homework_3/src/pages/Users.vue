@@ -15,8 +15,7 @@ export default {
   },
 
   data: () => ({
-    url: 'http://localhost:3000/list',
-    loading: true
+    url: 'http://localhost:3000/list'
   })
 }
 </script>
