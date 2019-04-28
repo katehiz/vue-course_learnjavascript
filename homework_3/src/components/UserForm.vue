@@ -1,3 +1,6 @@
+<!--===========================================================-->
+<!--== КОМПОНЕНТ ФОРМЫ РЕДАКТИРОВАНИЯ/СОЗДАНИЯ ПОЛЬЗОВАТЕЛЕЙ ==-->
+<!--===========================================================-->
 <template>
     <form>
         <div class="form-group">
@@ -34,7 +37,7 @@
         </div>
         <div class="form-group">
             <label for="age">Возраст</label>
-            <input id="age" v-model="scopeUser.age" type="number" class="form-control" name="age" />
+            <input id="age" v-model.number="scopeUser.age" type="number" class="form-control" name="age" />
             <div class="invalid-feedback">
                 Please choose an Age.
             </div>
@@ -48,7 +51,7 @@
         </div>
         <div class="form-group">
             <label for="phone">Номер телефона</label>
-            <input id="phone" v-model="scopeUser.phone" type="text" class="form-control" name="phone" />
+            <input id="phone" v-model="user.phone" type="text" class="form-control" name="phone" />
             <div class="invalid-feedback">
                 Please choose a phone number.
             </div>
@@ -84,7 +87,7 @@
             <label for="registered">Дата регистрации</label>
             <input
                 id="registered"
-                v-model="scopeUser.registered"
+                v-model="user.registered"
                 type="date"
                 class="form-control"
                 name="registered"
@@ -93,9 +96,9 @@
                 Please choose a date of user registration.
             </div>
         </div>
-        <code>{{ scopeUser }}</code>
+        <code>{{ user }}</code>
         <hr>
-        <slot name="control-buttons"/>
+        <slot name="control-buttons"></slot>
         <hr>
     </form>
 </template>
@@ -113,28 +116,25 @@ export default {
         }
     },
     data: () => ({
-        scopeUser: {}
+        scopeUser: null
     }),
-
     watch: {
         user: {
             deep: true,
             handler() {
-                this.scopeUser = this.user
+                if ( this.scopeUser !== this.user )
+                    this.scopeUser = Object.assign({}, this.user)
             }
         },
         scopeUser: {
             deep: true,
             handler() {
-                this.$emit('input', this.user)
+                this.$emit('input', this.scopeUser)
             }
         }
     },
-    methods: {
-        setUserScope() {
-            this.scopeUser = Object.assign({}, this.user);
-
-        }
+    created() {
+        this.scopeUser = Object.assign({}, this.user)
     }
 }
 </script>
