@@ -1,12 +1,13 @@
-<!--=====================-->
-<!--==КОМПОНЕНТ ТАБЛИЦЫ==-->
-<!--=====================-->
+<!--=====================================-->
+<!--== КОМПОНЕНТ ТАБЛИЦЫ ПОЛЬЗОВАТЕЛЕЙ ==-->
+<!--=====================================-->
 
 <template>
   <div class="card">
     <div class="card-header">
       <h5 class="card-title float-left">Список пользователей: {{ rowsCount }}</h5>
-      <button type="button" class="btn btn-sm btn-info float-right" @click="loadUsers">
+        <button class="btn btn-sm btn-warning float-right" @click="goToAddUserPage">Add New User</button>
+      <button type="button" class="btn btn-sm btn-info float-right mr-2" @click="loadUsers">
         Refresh Userlist
         {{ loading ? '...' : '' }}
       </button>
@@ -16,8 +17,10 @@
         <div class="col-6">
           <div class="form-group">
             <p>Выберите кол-во элементов для показа на странице</p>
-
-            <rows-selector v-model.number="rowsPerPage" :page-count="rowsPerPage"> </rows-selector>
+            <rows-selector
+                v-model.number="rowsPerPage"
+                :page-count="rowsPerPage">
+            </rows-selector>
           </div>
         </div>
       </div>
@@ -78,7 +81,7 @@ export default {
             users: [],
             rowsPerPage: 5,
             selectedPage: 1,
-            loading: false
+            loading: true
         }
     },
     computed: {
@@ -96,24 +99,31 @@ export default {
     watch: {
         rowsPerPage: function() {
             this.selectedPage = 1
+        },
+        users: function () {
+            this.setDefaultParams()
         }
     },
     mounted: function() {
         this.loadUsers()
     },
     methods: {
+        setDefaultParams: function () {
+            this.rowsPerPage = 5;
+            this.selectedPage = 1
+        },
         loadUsers: function() {
             this.loading = true;
-            this.rowsPerPage = 5;
-            this.selectedPage = 1;
             axios
-                .get( this.url ) //http://jsonplaceholder.typicode.com/users
-                //.then(response => response.data)
+                .get( this.url )
                 .then(response => {
-                this.users = response.data
-            })
-            .catch( error => console.error(error) )
-            .finally( () => (this.loading = false) );
+                    this.users = response.data
+                })
+                .catch( error => console.error(error) )
+                .finally( () => this.loading = false );
+        },
+        goToAddUserPage: function () {
+            this.$router.push({path: '/add'})
         }
     }
 }
