@@ -6,13 +6,16 @@
             </h3>
         </div>
         <div class="card-body">
-
             <user-form v-model="user">
                 <div slot="control-buttons">
-                    <button type="button" class="btn btn-sm btn-success" v-on:click="addUser">Создать пользователя</button>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-success"
+                        v-on:click="addUser">
+                        Создать пользователя
+                    </button>
                 </div>
             </user-form>
-
         </div>
     </div>
 </template>
@@ -42,31 +45,27 @@
             'user-form': UserForm
         },
         data: () => ({
-            user: null, //defaultUser,
+            user: null,
             restUrl: 'http://localhost:3000/list/',
-            title: ''
+            parentUrl: '/users'
         }),
+        computed: {
+            title() {
+                return `${this.user.firstName} ${this.user.secondName}`
+            }
+        },
         created() {
             this.user = Object.assign({}, defaultUser)
-        },
-        watch: {
-            user: {
-                deep: true,
-                handler() {
-                    this.title = `${this.user.firstName} ${this.user.firstName}`
-                }
-            }
         },
         methods: {
             addUser() {
                 axios
                     .post(this.restUrl, this.user)
                     .then( () => {
-                        this.$router.push({ path: '/users' })
+                        this.$router.push({ path: this.parentUrl })
                     })
             }
         }
-
     }
 
 </script>
